@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UWPMarvelHeroExplorer.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,14 +24,24 @@ namespace UWPMarvelHeroExplorer
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public ObservableCollection<Character> Characters;
+
         public MainPage()
         {
             this.InitializeComponent();
+            Characters = new ObservableCollection<Character>();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            var data = MarvelFacade.GetCharacterListAsync();
+            MainProgressRing.IsActive = true;
+            MainProgressRing.Visibility = Visibility.Visible;
+
+            await MarvelFacade.UpdateCharacterListAsync(Characters);
+
+            MainProgressRing.IsActive = false;
+            MainProgressRing.Visibility = Visibility.Collapsed;
+            AttributeTextBlock.Visibility = Visibility.Visible;
         }
     }
 }

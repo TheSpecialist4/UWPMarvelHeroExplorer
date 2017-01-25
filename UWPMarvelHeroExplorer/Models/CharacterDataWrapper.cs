@@ -28,7 +28,7 @@ namespace UWPMarvelHeroExplorer.Models {
         public int id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-        public DateTime modified { get; set; }
+        public string modified { get; set; }
         public Thumbnail thumbnail { get; set; }
         public string resourceURI { get; set; }
         public Comics comics { get; set; }
@@ -41,6 +41,8 @@ namespace UWPMarvelHeroExplorer.Models {
     public class Thumbnail {
         public string path { get; set; }
         public string extension { get; set; }
+        public string small { get; set; }
+        public string large { get; set; }
     }
 
     public class Comics {

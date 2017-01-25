@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -14,14 +15,35 @@ using Windows.Storage.Streams;
 namespace UWPMarvelHeroExplorer {
     public class MarvelFacade
     {
-
         // read api keys here
         private static string PublicKey = File.ReadAllText("Secret/publickey.txt");
         private static string PrivateKey = File.ReadAllText("Secret/privatekey.txt");
 
+        private const string IMAGE_NOT_AVAILABLE_PATH = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+
         private static readonly int MAXSIZE = 1500;
 
-        public async static Task<CharacterDataWrapper> GetCharacterListAsync()
+        public static async Task UpdateCharacterListAsync(ObservableCollection<Character> characterList)
+        {
+            var characterDataWrapper = await GetCharacterDataWrapperAsync();
+            var characters = characterDataWrapper.data.results;
+
+            foreach (var character in characters) {
+                if (character.thumbnail != null && character.thumbnail.path != "" && 
+                    character.thumbnail.path != IMAGE_NOT_AVAILABLE_PATH) {
+
+                    character.thumbnail.small = string.Format("{0}/standard_small.{1}", 
+                        character.thumbnail.path, character.thumbnail.extension);
+
+                    character.thumbnail.large = string.Format("{0}/portrait_large.{1}",
+                        character.thumbnail.path, character.thumbnail.extension);
+
+                    characterList.Add(character);
+                }
+            }
+        }
+
+        private async static Task<CharacterDataWrapper> GetCharacterDataWrapperAsync()
         {
             var randomGenerator = new Random();
             var offset = randomGenerator.Next(MAXSIZE);
@@ -32,7 +54,7 @@ namespace UWPMarvelHeroExplorer {
 
             // assemble url
             var url = string.Format(
-                "https://gateway.marvel.com:443/v1/public/characters?limit=10&offset={0}&apikey={1}&ts={2}&hash={3}",
+                "https://gateway.marvel.com:443/v1/public/characters?limit=50&offset={0}&apikey={1}&ts={2}&hash={3}",
                 offset, PublicKey, timeStamp, hashedValue);
 
             // call marvel api
@@ -48,7 +70,9 @@ namespace UWPMarvelHeroExplorer {
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonMessage));
 
             // convert the bytes in the stream to appropriate classes
-            return serializer.ReadObject(memoryStream) as CharacterDataWrapper;
+            var result = (CharacterDataWrapper) serializer.ReadObject(memoryStream);
+            System.Diagnostics.Debug.WriteLine("dummy");
+            return result;
         }
 
         private static string GetHash(string timeStamp)
