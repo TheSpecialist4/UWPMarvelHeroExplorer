@@ -35,7 +35,7 @@ namespace UWPMarvelHeroExplorer {
                     character.thumbnail.small = string.Format("{0}/standard_small.{1}", 
                         character.thumbnail.path, character.thumbnail.extension);
 
-                    character.thumbnail.large = string.Format("{0}/portrait_large.{1}",
+                    character.thumbnail.large = string.Format("{0}/detail.{1}",
                         character.thumbnail.path, character.thumbnail.extension);
 
                     characterList.Add(character);
