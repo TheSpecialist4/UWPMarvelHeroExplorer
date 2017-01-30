@@ -13,6 +13,7 @@ using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
 
 namespace UWPMarvelHeroExplorer {
+
     public class MarvelFacade
     {
         // read api keys here
@@ -43,26 +44,53 @@ namespace UWPMarvelHeroExplorer {
             }
         }
 
+        public static async Task UpdateComicListAsync(ObservableCollection<Comic> comicList, int characterId)
+        {
+            var comicDataWrapper = await GetComicDataWrapperAsync(characterId);
+            var comics = comicDataWrapper.data.results;
+
+            comicList.Clear();
+
+            foreach (var comic in comics) {
+                if (comic.thumbnail != null && comic.thumbnail.path != "" &&
+                    comic.thumbnail.path != IMAGE_NOT_AVAILABLE_PATH) {
+
+                    comic.thumbnail.small = string.Format("{0}/portrait_medium.{1}", 
+                        comic.thumbnail.path, comic.thumbnail.extension);
+
+                    comicList.Add(comic);
+                }
+            }
+        }
+
+        private static async Task<ComicDataWrapper> GetComicDataWrapperAsync(int characterId)
+        {
+            // call marvel
+            var partialUrl = string.Format(
+                "https://gateway.marvel.com:443/v1/public/characters/{0}/comics?limit=10", characterId);
+
+            var jsonMessage = await CallMarvelAsync(partialUrl);
+
+            // create serializer for CharacterDataWrapper
+            var serializer = new DataContractJsonSerializer(typeof(ComicDataWrapper));
+            // get the content from jsonMessage and store into this stream
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonMessage));
+
+            // convert the bytes in the stream to appropriate classes
+            var result = (ComicDataWrapper)serializer.ReadObject(memoryStream);
+            System.Diagnostics.Debug.WriteLine("dummy");
+            return result;
+        }
+
         private async static Task<CharacterDataWrapper> GetCharacterDataWrapperAsync()
         {
             var randomGenerator = new Random();
             var offset = randomGenerator.Next(MAXSIZE);
 
-            // get md5 hash
-            var timeStamp = DateTime.Now.Ticks.ToString();
-            var hashedValue = GetHash(timeStamp);
+            var partialUrl = string.Format(
+                "https://gateway.marvel.com:443/v1/public/characters?limit=50&offset={0}", offset);
 
-            // assemble url
-            var url = string.Format(
-                "https://gateway.marvel.com:443/v1/public/characters?limit=50&offset={0}&apikey={1}&ts={2}&hash={3}",
-                offset, PublicKey, timeStamp, hashedValue);
-
-            // call marvel api
-            HttpClient httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(url);
-            var jsonMessage = await response.Content.ReadAsStringAsync();
-
-            // response -> string -> json -> deserialize
+            var jsonMessage = await CallMarvelAsync(partialUrl);
 
             // create serializer for CharacterDataWrapper
             var serializer = new DataContractJsonSerializer(typeof(CharacterDataWrapper));
@@ -70,9 +98,21 @@ namespace UWPMarvelHeroExplorer {
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonMessage));
 
             // convert the bytes in the stream to appropriate classes
-            var result = (CharacterDataWrapper) serializer.ReadObject(memoryStream);
+            var result = (CharacterDataWrapper)serializer.ReadObject(memoryStream);
             System.Diagnostics.Debug.WriteLine("dummy");
             return result;
+        }
+
+        private static async Task<string> CallMarvelAsync(string partialUrl)
+        {
+            var timeStamp = DateTime.Now.Ticks.ToString();
+            var hashedValue = GetHash(timeStamp);
+
+            var url = string.Format("{0}&apikey={1}&ts={2}&hash={3}", partialUrl, PublicKey, timeStamp, hashedValue);
+
+            HttpClient httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(url);
+            return await response.Content.ReadAsStringAsync();
         }
 
         private static string GetHash(string timeStamp)

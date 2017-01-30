@@ -26,6 +26,7 @@ namespace UWPMarvelHeroExplorer
     public sealed partial class MainPage : Page
     {
         public ObservableCollection<Character> Characters;
+        public ObservableCollection<Comic> Comics;
 
         private BitmapImage CurrentImage;
 
@@ -33,6 +34,7 @@ namespace UWPMarvelHeroExplorer
         {
             this.InitializeComponent();
             Characters = new ObservableCollection<Character>();
+            Comics = new ObservableCollection<Comic>();
             CurrentImage = new BitmapImage();
         }
 
@@ -41,7 +43,14 @@ namespace UWPMarvelHeroExplorer
             MainProgressRing.IsActive = true;
             MainProgressRing.Visibility = Visibility.Visible;
 
-            await MarvelFacade.UpdateCharacterListAsync(Characters);
+            try {
+                while (Characters.Count < 20) {
+                    await MarvelFacade.UpdateCharacterListAsync(Characters);
+                }
+            }
+            catch (Exception) {
+
+            }
 
             MainProgressRing.IsActive = false;
             MainProgressRing.Visibility = Visibility.Collapsed;
@@ -50,8 +59,11 @@ namespace UWPMarvelHeroExplorer
             ListHeadingTextBlock.Visibility = Visibility.Visible;
         }
 
-        private void CharactersListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void CharactersListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            MainProgressRing.IsActive = true;
+            MainProgressRing.Visibility = Visibility.Visible;
+
             var selectedCharacter = e.ClickedItem as Character;
 
             var imageSource = new BitmapImage();
@@ -61,7 +73,17 @@ namespace UWPMarvelHeroExplorer
             CurrentImage = imageSource;
 
             CharacterDetailsImage.Source = imageSource;
-            ImageStackPanel.Visibility = Visibility.Visible;
+
+            CharacterNameTextBlock.Text = selectedCharacter.name;
+            DescriptionTextBlock.Text = selectedCharacter.description;
+
+            await MarvelFacade.UpdateComicListAsync(Comics, selectedCharacter.id);
+
+            ImageGrid.Visibility = Visibility.Visible;
+            FeaturedTextBlock.Visibility = Visibility.Visible;
+
+            MainProgressRing.IsActive = false;
+            MainProgressRing.Visibility = Visibility.Collapsed;
         }
 
         private void CharacterDetailsImage_Tapped(object sender, TappedRoutedEventArgs e)
@@ -74,6 +96,11 @@ namespace UWPMarvelHeroExplorer
         private void ImagePopup_Closed(object sender, object e)
         {
             MainGridShowStoryboard.Begin();
+        }
+
+        private void ComicsGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
         }
     }
 }

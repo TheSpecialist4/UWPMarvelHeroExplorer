@@ -31,7 +31,7 @@ namespace UWPMarvelHeroExplorer.Models {
         public string modified { get; set; }
         public Thumbnail thumbnail { get; set; }
         public string resourceURI { get; set; }
-        public Comics comics { get; set; }
+        public ComicSummaries comics { get; set; }
         public Series series { get; set; }
         public Stories stories { get; set; }
         public Events events { get; set; }
@@ -45,14 +45,14 @@ namespace UWPMarvelHeroExplorer.Models {
         public string large { get; set; }
     }
 
-    public class Comics {
+    public class ComicSummaries {
         public int available { get; set; }
         public string collectionURI { get; set; }
-        public List<Comic> items { get; set; }
+        public List<ComicSummary> items { get; set; }
         public int returned { get; set; }
     }
 
-    public class Comic {
+    public class ComicSummary {
         public string resourceURI { get; set; }
         public string name { get; set; }
     }
