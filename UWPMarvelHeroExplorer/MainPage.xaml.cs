@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -40,6 +41,8 @@ namespace UWPMarvelHeroExplorer
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            DetailsGrid.Visibility = Visibility.Collapsed;
+
             MainProgressRing.IsActive = true;
             MainProgressRing.Visibility = Visibility.Visible;
 
@@ -61,6 +64,8 @@ namespace UWPMarvelHeroExplorer
 
         private async void CharactersListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            if (DetailsGrid.Visibility == Visibility.Collapsed) DetailsGrid.Visibility = Visibility.Visible;
+
             MainProgressRing.IsActive = true;
             MainProgressRing.Visibility = Visibility.Visible;
 
@@ -88,19 +93,20 @@ namespace UWPMarvelHeroExplorer
 
         private void CharacterDetailsImage_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            PopupImage.Source = CurrentImage;
-            ImagePopup.IsOpen = true;
-            PopupOpenStoryboard.Begin();
+            FlyoutImage.Source = CurrentImage;
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+            MainGridBlurStoryboard.Begin();
         }
 
-        private void ImagePopup_Closed(object sender, object e)
+        private void CharacterImageFlyout_Closed(object sender, object e)
         {
             MainGridShowStoryboard.Begin();
         }
 
-        private void ComicsGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ComicImage_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+            MainGridBlurStoryboard.Begin();
         }
     }
 }
