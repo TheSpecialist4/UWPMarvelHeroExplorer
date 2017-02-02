@@ -19,26 +19,28 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ellipse">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                <EasingDoubleKeyFrame KeyTime="0" Value="0.4"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                <EasingDoubleKeyFrame KeyTime="0" Value="0.4"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Ellipse x:Name="ellipse" Fill="Transparent" Height="250" Stroke="LightGray" Width="250" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
-            <Ellipse.RenderTransform>
-                <CompositeTransform/>
-            </Ellipse.RenderTransform>
-        </Ellipse>
-        <TextBlock x:Name="textBlock" TextWrapping="Wrap" FontSize="24" Foreground="Gray" TextAlignment="Center" MaxWidth="225" Text="Stay tuned while we make this page awesome!" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
-            <TextBlock.RenderTransform>
-                <CompositeTransform/>
-            </TextBlock.RenderTransform>
-        </TextBlock>
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Ellipse x:Name="ellipse" Fill="Transparent" Height="250" Stroke="LightGray" Width="250" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <CompositeTransform/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock x:Name="textBlock" TextWrapping="Wrap" FontSize="24" Foreground="Gray" TextAlignment="Center" MaxWidth="225" Text="Stay tuned while we make this page awesome!" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                <TextBlock.RenderTransform>
+                    <CompositeTransform/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+    </ScrollViewer>
 </Page>
