@@ -186,19 +186,44 @@
             </Setter>
         </Style>
     </Page.Resources>
+    
+    
+    <!-- Main Grid -->
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="DefaultState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainSplitView.CompactPaneLength" Value="42" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainSplitView.CompactPaneLength" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <RelativePanel Background="#f5f9f4">
+        <RelativePanel Grid.Row="0" Background="#f5f9f4">
             <Button Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" FontSize="22" Content="&#xE700;" RelativePanel.AlignLeftWithPanel="True" Click="HamburgerButton_Click" Foreground="White" Background="#18a0ad" Style="{StaticResource HamburgerButtonStyle}" />
-            <TextBlock Name="HeadingTextBlock" FontSize="20" RelativePanel.RightOf="HamburgerButton" Margin="20,0,0,0" VerticalAlignment="Center"/>
+            <Button Name="BackButton" FontFamily="Segoe MDL2 Assets" Content="&#xE0C4;" FontSize="22" Foreground="White" Background="Purple" RelativePanel.RightOf="HamburgerButton" Visibility="Collapsed" Margin="10,0,0,0" />
+            <TextBlock Name="HeadingTextBlock" FontSize="20" RelativePanel.RightOf="BackButton" Margin="20,0,0,0" VerticalAlignment="Center"/>
         </RelativePanel>
         <SplitView Name="MainSplitView" Grid.Row="1" DisplayMode="CompactOverlay" CompactPaneLength="42" OpenPaneLength="250">
             <SplitView.Pane>
                 <ListBox SelectionMode="Single" SelectionChanged="ListBox_SelectionChanged" Background="#022023" Foreground="White">
-                    <ListBoxItem Name="HomeListBoxItem" Style="{StaticResource ListBoxItemStyle1}" Margin="0,0,0,10">
+                    <ListBoxItem Name="HomeListBoxItem" Style="{StaticResource ListBoxItemStyle1}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="22" Text="&#xE80F;" />
                             <TextBlock Text="Home" Margin="20,0,0,0" VerticalAlignment="Center" />

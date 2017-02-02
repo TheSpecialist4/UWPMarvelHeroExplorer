@@ -67,6 +67,11 @@ namespace UWPMarvelHeroExplorer
         private async void CharactersListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (DetailsGrid.Visibility == Visibility.Collapsed) DetailsGrid.Visibility = Visibility.Visible;
+            if (Window.Current.Bounds.Width < 720) {
+                CharactersListView.Visibility = Visibility.Collapsed;
+                MainGridColumnDef1.Width = new GridLength(0, GridUnitType.Pixel);
+                MainGridColumnDef2.Width = new GridLength(1, GridUnitType.Star);
+            }
 
             MainProgressRing.IsActive = true;
             MainProgressRing.Visibility = Visibility.Visible;
@@ -109,6 +114,15 @@ namespace UWPMarvelHeroExplorer
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
             MainGridBlurStoryboard.Begin();
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            CharactersListView.Visibility = Visibility.Visible;
+            DetailsGrid.Visibility = Visibility.Collapsed;
+
+            MainGridColumnDef2.Width = new GridLength(0, GridUnitType.Pixel);
+            MainGridColumnDef1.Width = new GridLength(1, GridUnitType.Star);
         }
     }
 }
