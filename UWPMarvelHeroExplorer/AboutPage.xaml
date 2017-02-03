@@ -29,7 +29,7 @@
         </Storyboard>
     </Page.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Enabled" Background="White">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Ellipse x:Name="ellipse" Fill="Transparent" Height="250" Stroke="LightGray" Width="250" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                 <Ellipse.RenderTransform>

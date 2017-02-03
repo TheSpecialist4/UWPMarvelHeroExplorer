@@ -112,10 +112,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="HamburgerButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{ThemeResource ButtonBackground}"/>
-            <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}"/>
-            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}"/>
+        <!--<Style x:Key="HamburgerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource ButtonBackgroundThemeBrush}"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForegroundThemeBrush}"/>
+            <Setter Property="BorderBrush" Value="#18a0ad"/>
             <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
             <Setter Property="Padding" Value="8,4,8,4"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -184,7 +184,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </Page.Resources>
     
     
@@ -216,9 +216,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <RelativePanel Grid.Row="0" Background="#f5f9f4">
-            <Button Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" FontSize="22" Content="&#xE700;" RelativePanel.AlignLeftWithPanel="True" Click="HamburgerButton_Click" Foreground="White" Background="#18a0ad" Style="{StaticResource HamburgerButtonStyle}" />
-            <Button Name="BackButton" FontFamily="Segoe MDL2 Assets" Content="&#xE0C4;" FontSize="22" Foreground="White" Background="Purple" RelativePanel.RightOf="HamburgerButton" Visibility="Collapsed" Margin="10,0,0,0" />
-            <TextBlock Name="HeadingTextBlock" FontSize="20" RelativePanel.RightOf="BackButton" Margin="20,0,0,0" VerticalAlignment="Center"/>
+            <!--Style="{StaticResource HamburgerButtonStyle}"-->
+            <Button Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" FontSize="22"  Content="&#xE700;" RelativePanel.AlignLeftWithPanel="True" Click="HamburgerButton_Click" Foreground="White" Background="#18a0ad" />
+            <TextBlock Name="HeadingTextBlock" FontSize="20" RelativePanel.RightOf="HamburgerButton" Margin="20,0,0,0" VerticalAlignment="Center"/>
         </RelativePanel>
         <SplitView Name="MainSplitView" Grid.Row="1" DisplayMode="CompactOverlay" CompactPaneLength="42" OpenPaneLength="250">
             <SplitView.Pane>

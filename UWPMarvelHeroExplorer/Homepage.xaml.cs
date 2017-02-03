@@ -68,7 +68,10 @@ namespace UWPMarvelHeroExplorer
         {
             if (DetailsGrid.Visibility == Visibility.Collapsed) DetailsGrid.Visibility = Visibility.Visible;
             if (Window.Current.Bounds.Width < 720) {
-                CharactersListView.Visibility = Visibility.Collapsed;
+                //CharactersListView.Visibility = Visibility.Collapsed;
+
+                ListViewSlideLeftStoryboard.Begin();
+
                 MainGridColumnDef1.Width = new GridLength(0, GridUnitType.Pixel);
                 MainGridColumnDef2.Width = new GridLength(1, GridUnitType.Star);
             }
@@ -118,11 +121,13 @@ namespace UWPMarvelHeroExplorer
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            CharactersListView.Visibility = Visibility.Visible;
-            DetailsGrid.Visibility = Visibility.Collapsed;
+            //CharactersListView.Visibility = Visibility.Visible;
+            //DetailsGrid.Visibility = Visibility.Collapsed;
 
             MainGridColumnDef2.Width = new GridLength(0, GridUnitType.Pixel);
             MainGridColumnDef1.Width = new GridLength(1, GridUnitType.Star);
+
+            ListViewSlideRightStoryboard.Begin();
         }
     }
 }
